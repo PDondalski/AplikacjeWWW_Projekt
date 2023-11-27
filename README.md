@@ -1,11 +1,9 @@
 # AplikacjeWWW_Projekt
 Repozytorium przeznaczone do przechowywania projektu wykonanego w ramach przedmiotu "Aplikacje WWW".
-===========================================
 
-Autorzy projektu:
+**Autorzy projektu:**
 
-Piotr Dondalski
-
-Tymoteusz Łuczko
+*Piotr Dondalski*
+*Tymoteusz Łuczko*
 
 ===========================================
