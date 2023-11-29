@@ -1,3 +1,5 @@
+
+
 # This is an auto-generated Django model module.
 # You'll have to do the following manually to clean this up:
 #   * Rearrange models' order
@@ -6,6 +8,12 @@
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
+import datetime
+from datetime import date
+from django.utils.text import slugify
+from django.conf import settings
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class AuthGroup(models.Model):
@@ -74,48 +82,29 @@ class AuthUserUserPermissions(models.Model):
         unique_together = (('user', 'permission'),)
 
 
-class BudgetBudzet(models.Model):
-    id_budzet = models.AutoField(primary_key=True, blank=True, null=False)
-    id_uzytkownik = models.IntegerField(blank=True, null=True)
-    rok = models.IntegerField(blank=True, null=True)
-    miesiac = models.IntegerField(blank=True, null=True)
+class BgBudzet(models.Model):
+    budzet_rok = models.IntegerField(blank=True, null=True)
+    budrzet_miesiac = models.IntegerField(blank=True, null=True)
     budzet_wartosc = models.TextField(blank=True, null=True)  # This field type is a guess.
 
-    class Meta:
-        managed = False
-        db_table = 'budget_budzet'
 
-
-class BudgetKategoria(models.Model):
-    id_kategoria = models.AutoField(primary_key=True, blank=True, null=False)
+class BgKategoria(models.Model):
     kategoria_nazwa = models.TextField(blank=True, null=True)
-    kategoria_wydatki = models.TextField(blank=True, null=True)  # This field type is a guess.
-
-    class Meta:
-        managed = False
-        db_table = 'budget_kategoria'
+    kategoria_wydatek = models.TextField(blank=True, null=True)  # This field type is a guess.
 
 
-class BudgetPolaczenie(models.Model):
-    id_kategoria = models.ForeignKey(BudgetKategoria, models.DO_NOTHING, db_column='id_kategoria', blank=True, null=True)
-    id_budzet = models.ForeignKey(BudgetBudzet, models.DO_NOTHING, db_column='id_budzet', blank=True, null=True)
 
-    class Meta:
-        managed = False
-        db_table = 'budget_polaczenie'
+class BgPolaczenie(models.Model):
+    kategoria = models.ForeignKey(BgKategoria, on_delete=models.CASCADE)
+    budzet = models.ForeignKey(BgBudzet, on_delete=models.CASCADE)
 
 
-class BudgetWydatek(models.Model):
-    id_wydatek = models.AutoField(primary_key=True, blank=True, null=False)
-    id_uzytkownik = models.IntegerField(blank=True, null=True)
-    id_kategoria = models.ForeignKey(BudgetKategoria, models.DO_NOTHING, db_column='id_kategoria', blank=True, null=True)
-    wydatek_kategoria = models.TextField(blank=True, null=True)
-    wydatek_wartosc = models.TextField(blank=True, null=True)  # This field type is a guess.
+
+class BgWydatek(models.Model):
+    wydatek_kategoria = models.ForeignKey(BgKategoria, on_delete=models.CASCADE)
+    wydatek_warotsc = models.TextField(blank=True, null=True)  # This field type is a guess.
     wydatek_data = models.DateField(blank=True, null=True)
 
-    class Meta:
-        managed = False
-        db_table = 'budget_wydatek'
 
 
 class DjangoAdminLog(models.Model):
@@ -129,7 +118,6 @@ class DjangoAdminLog(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'django_admin_log'
 
 
 class DjangoContentType(models.Model):
