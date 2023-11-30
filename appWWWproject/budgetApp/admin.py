@@ -4,7 +4,7 @@ from .models import *
 
 admin.site.register(BgBudzet)
 admin.site.register(BgKategoria)
-#admin.site.register(BgPolaczenie)
+admin.site.register(BgOszczednosc)
 admin.site.register(BgWydatek)
 
 

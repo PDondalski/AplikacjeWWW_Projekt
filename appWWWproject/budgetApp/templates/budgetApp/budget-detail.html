@@ -1,0 +1,77 @@
+{% extends 'budgetApp/home.html' %}
+{% block content %}
+
+<div class="container">
+
+    <section class="section section-stats">
+        <div class="row">
+
+            <div class="col l3 m6 s12 center">
+                <div class="card-panel">
+                    <h6 class="bold left">Total Budget</h6>
+                    <h1 class="bold ">${{ budget.budrzet_wartosc }}</h1>
+                </div>
+            </div>
+
+            <div class="col l3 m6 s12 center">
+                <div class="card-panel">
+                    <h6 class="bold left">Budget Cat</h6>
+                    <h1 class="bold ">$...</h1>
+                </div>
+            </div>
+
+            <div class="col l3 m6 s12 center">
+                <div class="card-panel">
+                    <h6 class="bold left">Total Spends</h6>
+                    <h1 class="bold ">$...</h1>
+                </div>
+            </div>
+
+            <div class="col l3 m6 s12 center">
+                <div class="card-panel">
+                    <h6 class="bold left">Total Savings</h6>
+                    <h1 class="bold ">$...</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section section-expenses">
+        <div class="row">
+            <button class="btn waves-effect right"><i class="material-icons white-text left">add_circle</i>
+            Dodaj Wydatek
+            </button>
+        </div>
+
+        <ul class="z-depth-1">
+
+            {% for wydatek in wydatek_list %}
+            <li>
+                <div class="card-panel z-depth0 expense">
+                    <div class="row">
+                        
+                        <div class="col l6">
+                            <span class="title">{{ wydatek.wydatek_data }}</span>
+                        </div>
+
+                        <div class="col l3">
+                            <span class="title"> $ {{ wydatek.wydatek_wartosc }}</span>
+                        </div>
+
+                        <div class="col 1">
+                            <span class="title bold">{{ wydatek.wydatek_kategoria }}</span>
+                        </div>
+
+                        <a href="">
+                            <i class="material-icons red-text right">close</i>
+                        </a>
+                    </div>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>    
+    </section>
+
+</div> 
+
+{% endblock %}

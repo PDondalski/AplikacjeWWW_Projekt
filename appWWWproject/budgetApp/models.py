@@ -81,31 +81,31 @@ class AuthUserUserPermissions(models.Model):
         db_table = 'auth_user_user_permissions'
         unique_together = (('user', 'permission'),)
 
-
+######################################################################################################
 class BgBudzet(models.Model):
     budzet_rok = models.IntegerField(blank=True, null=True)
-    budrzet_miesiac = models.IntegerField(blank=True, null=True)
-    budzet_wartosc = models.TextField(blank=True, null=True)  # This field type is a guess.
+    budzet_miesiac = models.IntegerField(blank=True, null=True)
+    budzet_wartosc = models.DecimalField(blank=True, null=True, max_digits=10, decimal_places=2)  # This field type is a guess.
 
 
 class BgKategoria(models.Model):
-    kategoria_nazwa = models.TextField(blank=True, null=True)
-    kategoria_wydatek = models.TextField(blank=True, null=True)  # This field type is a guess.
-
-
-
-class BgPolaczenie(models.Model):
-    kategoria = models.ForeignKey(BgKategoria, on_delete=models.CASCADE)
-    budzet = models.ForeignKey(BgBudzet, on_delete=models.CASCADE)
-
+    budzet = models.ForeignKey(BgBudzet, on_delete=models.CASCADE, default=1)
+    kategoria_nazwa = models.CharField(blank=True, null=True, max_length=55)
+    kategoria_wydatek = models.DecimalField(blank=True, null=True, max_digits=10, decimal_places=2)  # This field type is a guess.
 
 
 class BgWydatek(models.Model):
+    wydatek_budzet = models.ForeignKey(BgBudzet, on_delete=models.CASCADE, default=1, related_name='wydatek')
     wydatek_kategoria = models.ForeignKey(BgKategoria, on_delete=models.CASCADE)
-    wydatek_warotsc = models.TextField(blank=True, null=True)  # This field type is a guess.
+    wydatek_warotsc = models.DecimalField(blank=True, null=True, max_digits=10, decimal_places=2)  # This field type is a guess.
     wydatek_data = models.DateField(blank=True, null=True)
 
 
+class BgOszczednosc(models.Model):
+    budzet = models.ForeignKey(BgBudzet, on_delete=models.CASCADE)
+    osczednosc_calkowita = models.DecimalField(blank=True, null=True, max_digits=10, decimal_places=2)
+
+#######################################################################################################
 
 class DjangoAdminLog(models.Model):
     object_id = models.TextField(blank=True, null=True)
