@@ -8,29 +8,29 @@
 
             <div class="col l3 m6 s12 center">
                 <div class="card-panel">
-                    <h6 class="bold left">Total Budget</h6>
-                    <h1 class="bold ">${{ budget.budrzet_wartosc }}</h1>
+                    <h6 class="bold left">Łączny budżet</h6>
+                    <h3 class="bold ">{{ budget.budzet_wartosc }} PLN</h3>
                 </div>
             </div>
 
             <div class="col l3 m6 s12 center">
                 <div class="card-panel">
-                    <h6 class="bold left">Budget Cat</h6>
-                    <h1 class="bold ">$...</h1>
+                    <h6 class="bold left">Kategoria</h6>
+                    <h3 class="bold ">... PLN</h3>
                 </div>
             </div>
 
             <div class="col l3 m6 s12 center">
                 <div class="card-panel">
-                    <h6 class="bold left">Total Spends</h6>
-                    <h1 class="bold ">$...</h1>
+                    <h6 class="bold left">Wydatki</h6>
+                    <h3 class="bold">{{total_wydatek}} PLN</h3>
                 </div>
             </div>
 
             <div class="col l3 m6 s12 center">
                 <div class="card-panel">
-                    <h6 class="bold left">Total Savings</h6>
-                    <h1 class="bold ">$...</h1>
+                    <h6 class="bold left">Oszczędności</h6>
+                    <h3 class="bold ">{{oszczednosci}} PLN</h3>
                 </div>
             </div>
         </div>
@@ -55,7 +55,7 @@
                         </div>
 
                         <div class="col l3">
-                            <span class="title"> $ {{ wydatek.wydatek_wartosc }}</span>
+                            <span class="title"> {{ wydatek.wydatek_wartosc }} PLN </span>
                         </div>
 
                         <div class="col 1">

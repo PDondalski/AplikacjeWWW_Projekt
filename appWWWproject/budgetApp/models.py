@@ -87,23 +87,35 @@ class BgBudzet(models.Model):
     budzet_miesiac = models.IntegerField(blank=True, null=True)
     budzet_wartosc = models.DecimalField(blank=True, null=True, max_digits=10, decimal_places=2)  # This field type is a guess.
 
+    def __str__(self):
+        return f'{self.budzet_miesiac}/{self.budzet_rok}'
+
 
 class BgKategoria(models.Model):
     budzet = models.ForeignKey(BgBudzet, on_delete=models.CASCADE, default=1)
     kategoria_nazwa = models.CharField(blank=True, null=True, max_length=55)
     kategoria_wydatek = models.DecimalField(blank=True, null=True, max_digits=10, decimal_places=2)  # This field type is a guess.
 
+    def __str__(self):
+        return self.kategoria_nazwa
+
 
 class BgWydatek(models.Model):
     wydatek_budzet = models.ForeignKey(BgBudzet, on_delete=models.CASCADE, default=1, related_name='wydatek')
     wydatek_kategoria = models.ForeignKey(BgKategoria, on_delete=models.CASCADE)
-    wydatek_warotsc = models.DecimalField(blank=True, null=True, max_digits=10, decimal_places=2)  # This field type is a guess.
-    wydatek_data = models.DateField(blank=True, null=True)
+    wydatek_wartosc = models.DecimalField(blank=True, null=True, max_digits=10, decimal_places=2)  # This field type is a guess.
+    wydatek_data = models.DateField(auto_now=True)
+
+    def __str__(self):
+        return f'{self.wydatek_wartosc} | {self.wydatek_data}'
 
 
 class BgOszczednosc(models.Model):
     budzet = models.ForeignKey(BgBudzet, on_delete=models.CASCADE)
     osczednosc_calkowita = models.DecimalField(blank=True, null=True, max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return self.osczednosc_calkowita
 
 #######################################################################################################
 
