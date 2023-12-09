@@ -20,7 +20,7 @@ def budget_detail(request, id):
                   {'budget': budget, 'wydatek_list': budget.wydatek.all(), 'total_wydatek': total_wydatek,
                    'oszczednosci': oszczednosci})
 
-class BudgetDetailView(APIView):
+class BudgetDetail(APIView):
     def get_object(self, id):
         try:
             return BgBudzet.objects.get(pk=id)
@@ -37,3 +37,9 @@ class BudgetDetailView(APIView):
             'total_wydatek': total_wydatek,
             'oszczednosci': oszczednosci
         })
+
+class BudgetList(APIView):
+    def get(self, request, format=None):
+        budgets = BgBudzet.objects.all().order_by('-budzet_rok', '-budzet_miesiac')
+        serializer = BgBudzetSerializer(budgets, many=True)
+        return Response(serializer.data)
