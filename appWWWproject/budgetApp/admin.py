@@ -10,7 +10,7 @@ admin.site.register(BgWydatek)
 
 class BgKategoriaAdmin(admin.ModelAdmin):
     list_display = ['kategoria_nazwa', 'budzet']
-    ordering = ['-budzet']
+    ordering = ['-budzet', 'kategoria_nazwa']
 
 admin.site.register(BgKategoria, BgKategoriaAdmin)
 
