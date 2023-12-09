@@ -3,10 +3,16 @@ from django.contrib import admin
 from .models import *
 
 admin.site.register(BgBudzet)
-admin.site.register(BgKategoria)
+#admin.site.register(BgKategoria)
 admin.site.register(BgOszczednosc)
 admin.site.register(BgWydatek)
 
+
+class BgKategoriaAdmin(admin.ModelAdmin):
+    list_display = ['kategoria_nazwa', 'budzet']
+    ordering = ['-budzet']
+
+admin.site.register(BgKategoria, BgKategoriaAdmin)
 
 #@admin.register(BudgetBudzet)
 ''' class BudgetBudzetAdmin(admin.ModelAdmin):
