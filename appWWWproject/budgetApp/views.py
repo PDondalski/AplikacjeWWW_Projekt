@@ -3,7 +3,7 @@ from django.db.models import Sum
 from .models import *
 from rest_framework.decorators import APIView
 from rest_framework.response import Response
-from .serializers import BgBudzetSerializer, BgWydatekSerializer
+from .serializers import BgBudzetSerializer, BgWydatekSerializer, BgKategoriaSerializer
 from django.http import Http404
 
 def home(request):
@@ -33,7 +33,7 @@ class BudgetDetail(APIView):
         oszczednosci = budget.budzet_wartosc - total_wydatek if total_wydatek else budget.budzet_wartosc
         budget_serializer = BgBudzetSerializer(budget)
         return Response({
-            'budget': budget_serializer.data,
+            'budzet': budget_serializer.data,
             'total_wydatek': total_wydatek,
             'oszczednosci': oszczednosci
         })
@@ -42,4 +42,22 @@ class BudgetList(APIView):
     def get(self, request, format=None):
         budgets = BgBudzet.objects.all().order_by('-budzet_rok', '-budzet_miesiac')
         serializer = BgBudzetSerializer(budgets, many=True)
+        return Response(serializer.data)
+
+class CategoryDetail(APIView):
+    def get_object(self, id):
+        try:
+            return BgKategoria.objects.get(pk=id)
+        except BgKategoria.DoesNotExist:
+            raise Http404
+
+    def get(self, request, id, format=None):
+        category = self.get_object(id)
+        serializer = BgKategoriaSerializer(category)
+        return Response(serializer.data)
+
+class CategoryList(APIView):
+    def get(self, request, format=None):
+        categories = BgKategoria.objects.all().order_by('budzet')
+        serializer = BgKategoriaSerializer(categories, many=True)
         return Response(serializer.data)
