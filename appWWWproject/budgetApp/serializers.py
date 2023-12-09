@@ -4,12 +4,12 @@ from .models import BgBudzet, BgKategoria, BgWydatek, BgOszczednosc
 class BgBudzetSerializer(serializers.ModelSerializer):
     class Meta:
         model = BgBudzet
-        fields = ['budzet_rok', 'budzet_miesiac', 'budzet_wartosc']
+        fields = ['id', 'budzet_rok', 'budzet_miesiac', 'budzet_wartosc']
         read_only_fields = ['id']
 class BgKategoriaSerializer(serializers.ModelSerializer):
     class Meta:
         model = BgKategoria
-        fields = ['budzet', 'kategoria_nazwa', 'kategoria_wydatek']
+        fields = ['id', 'budzet', 'kategoria_nazwa', 'kategoria_wydatek']
         read_only_fields = ['id']
 class BgWydatekSerializer(serializers.ModelSerializer):
     class Meta:

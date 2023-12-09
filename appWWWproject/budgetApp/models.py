@@ -1,5 +1,3 @@
-
-
 # This is an auto-generated Django model module.
 # You'll have to do the following manually to clean this up:
 #   * Rearrange models' order
@@ -10,6 +8,8 @@
 from django.db import models
 import datetime
 from datetime import date
+
+from django.db.models import Sum
 from django.utils.text import slugify
 from django.conf import settings
 from django.db.models.signals import post_save
@@ -116,6 +116,16 @@ class BgOszczednosc(models.Model):
 
     def __str__(self):
         return self.osczednosc_calkowita
+
+'''
+    @receiver(post_save, sender=BgWydatek)
+    def calculate_savings(sender, instance, **kwargs):
+        budget = instance.wydatek_budzet
+        total_wydatek = budget.wydatek.all().aggregate(Sum('wydatek_wartosc'))['wydatek_wartosc__sum']
+        oszczednosci = budget.budzet_wartosc - total_wydatek if total_wydatek else budget.budzet_wartosc
+
+        BgOszczednosc.objects.update_or_create(budzet=budget, defaults={'osczednosc_calkowita': oszczednosci})
+'''
 
 #######################################################################################################
 
