@@ -1,9 +1,11 @@
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Sum
+from rest_framework import status
+
 from .models import *
 from rest_framework.decorators import APIView
 from rest_framework.response import Response
-from .serializers import BgBudzetSerializer, BgWydatekSerializer, BgKategoriaSerializer, UserSerializer,RegisterSerializer
+from .serializers import BgBudzetSerializer, BgWydatekSerializer, BgKategoriaSerializer,  UserSerializer,RegisterSerializer
 from django.http import Http404
 from rest_framework.permissions import AllowAny
 from django.contrib.auth.models import User
@@ -48,6 +50,11 @@ class BudgetList(APIView):
         serializer = BgBudzetSerializer(budgets, many=True)
         return Response(serializer.data)
 
+    def delete(self, request, pk, format=None):
+        snippet = self.get_object(pk)
+        snippet.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 class CategoryDetail(APIView):
     def get_object(self, id):
         try:
@@ -60,10 +67,53 @@ class CategoryDetail(APIView):
         serializer = BgKategoriaSerializer(category)
         return Response(serializer.data)
 
+
 class CategoryList(APIView):
     def get(self, request, format=None):
         categories = BgKategoria.objects.all().order_by('budzet')
         serializer = BgKategoriaSerializer(categories, many=True)
+        return Response(serializer.data)
+
+
+class ExpenseDetail(APIView):
+    def get_object(self, id):
+        try:
+            return BgWydatek.objects.get(pk=id)
+        except BgWydatek.DoesNotExist:
+            raise Http404
+
+    def get(self, request, id, format=None):
+        expense = self.get_object(id)
+        serializer = BgWydatekSerializer(expense)
+        return Response(serializer.data)
+
+    def delete(self, request, pk, format=None):
+        snippet = self.get_object(pk)
+        snippet.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+class ExpenseList(APIView):
+    def get(self, request, format=None):
+        expenses = BgWydatek.objects.all().order_by('-wydatek_budzet')
+        serializer = BgWydatekSerializer(expenses, many=True)
+        return Response(serializer.data)
+
+class SavingsDetail(APIView):
+    def get_object(self, id):
+        try:
+            return BgOszczednosc.objects.get(pk=id)
+        except BgOszczednosc.DoesNotExist:
+            raise Http404
+
+    def get(self, request, id, format=None):
+        saving = self.get_object(id)
+        serializer = BgOszczednoscSerializer(saving)
+        return Response(serializer.data)
+
+class SavingsList(APIView):
+    def get(self, request, format=None):
+        savings = BgOszczednosc.objects.all()
+        serializer = BgOszczednoscSerializer(savings, many=True)
         return Response(serializer.data)
 
 # Class based view to Get User Details using Token Authentication
