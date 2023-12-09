@@ -97,7 +97,7 @@ class BgKategoria(models.Model):
     kategoria_wydatek = models.DecimalField(blank=True, null=True, max_digits=10, decimal_places=2)  # This field type is a guess.
 
     def __str__(self):
-        return self.kategoria_nazwa
+        return f'{self.kategoria_nazwa} ({self.budzet.budzet_miesiac}/{self.budzet.budzet_rok})'
 
 
 class BgWydatek(models.Model):
