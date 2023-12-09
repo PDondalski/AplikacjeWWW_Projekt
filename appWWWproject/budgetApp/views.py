@@ -40,16 +40,24 @@ class BudgetDetail(APIView):
             'oszczednosci': oszczednosci
         })
 
-class BudgetList(APIView):
-    def get(self, request, format=None):
-        budgets = BgBudzet.objects.all().order_by('-budzet_rok', '-budzet_miesiac')
-        serializer = BgBudzetSerializer(budgets, many=True)
-        return Response(serializer.data)
+    def put(self, request, id, format=None):
+        budget = self.get_object(id)
+        serializer = BgWydatekSerializer(budget, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk, format=None):
         snippet = self.get_object(pk)
         snippet.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+class BudgetList(APIView):
+    def get(self, request, format=None):
+        budgets = BgBudzet.objects.all().order_by('-budzet_rok', '-budzet_miesiac')
+        serializer = BgBudzetSerializer(budgets, many=True)
+        return Response(serializer.data)
 
 class CategoryDetail(APIView):
     def get_object(self, id):
@@ -62,6 +70,14 @@ class CategoryDetail(APIView):
         category = self.get_object(id)
         serializer = BgKategoriaSerializer(category)
         return Response(serializer.data)
+
+    def put(self, request, id, format=None):
+        category = self.get_object(id)
+        serializer = BgKategoriaSerializer(category, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class CategoryList(APIView):
@@ -81,6 +97,14 @@ class ExpenseDetail(APIView):
         expense = self.get_object(id)
         serializer = BgWydatekSerializer(expense)
         return Response(serializer.data)
+
+    def put(self, request, id, format=None):
+        expense = self.get_object(id)
+        serializer = BgWydatekSerializer(expense, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk, format=None):
         snippet = self.get_object(pk)

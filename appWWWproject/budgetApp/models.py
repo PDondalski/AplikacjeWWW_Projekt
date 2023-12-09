@@ -115,7 +115,7 @@ class BgOszczednosc(models.Model):
     osczednosc_calkowita = models.DecimalField(blank=True, null=True, max_digits=10, decimal_places=2)
 
     def __str__(self):
-        return self.osczednosc_calkowita
+        return str(self.osczednosc_calkowita)
 
 '''
     @receiver(post_save, sender=BgWydatek)
