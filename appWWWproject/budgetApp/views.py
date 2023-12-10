@@ -2,11 +2,12 @@ from django.shortcuts import render, get_object_or_404
 from django.db.models import Sum
 from rest_framework import status
 
+
 from .models import *
 from rest_framework.decorators import APIView
 from rest_framework.response import Response
 from .serializers import BgBudzetSerializer, BgWydatekSerializer, BgKategoriaSerializer,  UserSerializer,RegisterSerializer, LoginSerializer
-from django.http import Http404
+from django.http import Http404, request
 from rest_framework.permissions import AllowAny
 from django.contrib.auth.models import User
 from rest_framework.authentication import TokenAuthentication
@@ -29,14 +30,17 @@ def budget_detail(request, id):
 
                 
 class CreateBudgetView(generics.CreateAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
     queryset = BgBudzet.objects.all()
     serializer_class = BgBudzetSerializer
 
 class CreateWydatekView(generics.CreateAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
     queryset = BgWydatek.objects.all()
     serializer_class = BgWydatekSerializer
 
 class CreateKategoriaView(generics.CreateAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
     queryset = BgKategoria.objects.all()
     serializer_class = BgKategoriaSerializer
 

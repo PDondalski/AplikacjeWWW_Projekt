@@ -7,10 +7,13 @@ from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth import authenticate
 
+
+
 class BgBudzetSerializer(serializers.ModelSerializer):
+    owner = serializers.ReadOnlyField(source='owner.username')
     class Meta:
         model = BgBudzet
-        fields = ['id', 'budzet_rok', 'budzet_miesiac', 'budzet_wartosc']
+        fields = ['id','budzet_rok', 'budzet_miesiac', 'owner', 'budzet_wartosc']
         read_only_fields = ['id']
 class BgKategoriaSerializer(serializers.ModelSerializer):
     class Meta:
@@ -29,7 +32,8 @@ class BgOszczednoscSerializer(serializers.ModelSerializer):
         read_only_fields = ['id']
 
 class UserSerializer(serializers.ModelSerializer):
-      class Meta:
+
+    class Meta:
         model = User
         fields = ["id", "first_name", "last_name", "username"]
 
@@ -53,7 +57,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         if attrs['password'] != attrs['password2']:
             raise serializers.ValidationError(
                 {"password": "Password fields didn't match."})
-            return attrs
+        return attrs
 
     def create(self, validated_data):
         user = User.objects.create(

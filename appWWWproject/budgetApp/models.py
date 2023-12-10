@@ -8,13 +8,19 @@
 from django.db import models
 import datetime
 from datetime import date
-
-from django.db.models import Sum
 from django.utils.text import slugify
+from pygments.lexers import get_lexer_by_name
+from pygments.formatters.html import HtmlFormatter
+from pygments import highlight
 from django.conf import settings
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.contrib.auth.models import BaseUserManager
 
+
+
+from django.contrib.auth.models import User
+from rest_framework.authentication import TokenAuthentication
 
 class AuthGroup(models.Model):
     name = models.CharField(unique=True, max_length=150)
@@ -170,3 +176,6 @@ class DjangoSession(models.Model):
     class Meta:
         managed = False
         db_table = 'django_session'
+
+class BearerTokenAuthentication(TokenAuthentication):
+    keyword = u"Bearer"
