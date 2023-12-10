@@ -5,12 +5,13 @@ from rest_framework import status
 from .models import *
 from rest_framework.decorators import APIView
 from rest_framework.response import Response
-from .serializers import BgBudzetSerializer, BgWydatekSerializer, BgKategoriaSerializer,  UserSerializer,RegisterSerializer
+from .serializers import BgBudzetSerializer, BgWydatekSerializer, BgKategoriaSerializer,  UserSerializer,RegisterSerializer, LoginSerializer
 from django.http import Http404
 from rest_framework.permissions import AllowAny
 from django.contrib.auth.models import User
 from rest_framework.authentication import TokenAuthentication
-from rest_framework import generics
+from rest_framework import generics, views, permissions
+from django.contrib.auth import authenticate, login
 
 def home(request):
     return render(request, "budgetApp/home.html", {})
@@ -153,3 +154,41 @@ class UserDetailAPI(APIView):
 class RegisterUserAPIView(generics.CreateAPIView):
     permission_classes = (AllowAny,)
     serializer_class = RegisterSerializer
+
+''' class LoginView(APIView):
+    # This view should be accessible also for unauthenticated users.
+    permission_classes = (permissions.AllowAny,)
+
+    def post(self, request, format=None):
+        serializer = serializers.LoginSerializer(data=self.request.data,
+            context={ 'request': self.request })
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        login(request, user)
+        return Response(None, status=status.HTTP_202_ACCEPTED) '''
+
+from rest_framework.generics import GenericAPIView
+
+class LoginView(GenericAPIView):
+    serializer_class = LoginSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request, *args, **kwargs):
+        return Response({"detail": "HTTP GET Method"})
+
+    def post(self, request, format=None):
+        serializer = LoginSerializer(data=self.request.data,
+            context={ 'request': self.request })
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        login(request, user)
+        return Response(None, status=status.HTTP_202_ACCEPTED)
+
+class UserList(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
+class UserDetail(generics.RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
