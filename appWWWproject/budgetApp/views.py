@@ -28,6 +28,7 @@ def budget_detail(request, id):
                    'oszczednosci': oszczednosci})
 
 class BudgetDetail(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
     def get_object(self, id):
         try:
             return BgBudzet.objects.get(pk=id)
@@ -59,12 +60,14 @@ class BudgetDetail(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 class BudgetList(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
     def get(self, request, format=None):
         budgets = BgBudzet.objects.all().order_by('-budzet_rok', '-budzet_miesiac')
         serializer = BgBudzetSerializer(budgets, many=True)
         return Response(serializer.data)
 
 class CategoryDetail(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
     def get_object(self, id):
         try:
             return BgKategoria.objects.get(pk=id)
@@ -86,6 +89,7 @@ class CategoryDetail(APIView):
 
 
 class CategoryList(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
     def get(self, request, format=None):
         categories = BgKategoria.objects.all().order_by('budzet')
         serializer = BgKategoriaSerializer(categories, many=True)
@@ -93,6 +97,7 @@ class CategoryList(APIView):
 
 
 class ExpenseDetail(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
     def get_object(self, id):
         try:
             return BgWydatek.objects.get(pk=id)
@@ -118,12 +123,14 @@ class ExpenseDetail(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 class ExpenseList(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
     def get(self, request, format=None):
         expenses = BgWydatek.objects.all().order_by('-wydatek_budzet')
         serializer = BgWydatekSerializer(expenses, many=True)
         return Response(serializer.data)
 
 class SavingsDetail(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
     def get_object(self, id):
         try:
             return BgOszczednosc.objects.get(pk=id)
@@ -136,6 +143,7 @@ class SavingsDetail(APIView):
         return Response(serializer.data)
 
 class SavingsList(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
     def get(self, request, format=None):
         savings = BgOszczednosc.objects.all()
         serializer = BgOszczednoscSerializer(savings, many=True)
@@ -144,7 +152,8 @@ class SavingsList(APIView):
 # Class based view to Get User Details using Token Authentication
 class UserDetailAPI(APIView):
     authentication_classes = (TokenAuthentication,)
-    permission_classes = (AllowAny,)
+    permission_classes = (permissions.IsAdminUser,)
+
     def get(self,request,*args,**kwargs):
         user = User.objects.get(id=request.user.id)
         serializer = UserSerializer(user)
@@ -154,6 +163,8 @@ class UserDetailAPI(APIView):
 class RegisterUserAPIView(generics.CreateAPIView):
     permission_classes = (AllowAny,)
     serializer_class = RegisterSerializer
+
+
 
 ''' class LoginView(APIView):
     # This view should be accessible also for unauthenticated users.
@@ -185,10 +196,14 @@ class LoginView(GenericAPIView):
         return Response(None, status=status.HTTP_202_ACCEPTED)
 
 class UserList(generics.ListAPIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (permissions.IsAdminUser,)
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
 
 class UserDetail(generics.RetrieveAPIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (permissions.IsAdminUser,)
     queryset = User.objects.all()
     serializer_class = UserSerializer
