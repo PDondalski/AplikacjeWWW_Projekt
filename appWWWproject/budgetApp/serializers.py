@@ -66,7 +66,6 @@ class RegisterSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
-from rest_framework import serializers
 
 class LoginSerializer(serializers.Serializer):
     """

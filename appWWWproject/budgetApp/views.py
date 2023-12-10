@@ -27,6 +27,20 @@ def budget_detail(request, id):
                   {'budget': budget, 'wydatek_list': budget.wydatek.all(), 'total_wydatek': total_wydatek,
                    'oszczednosci': oszczednosci})
 
+                
+class CreateBudgetView(generics.CreateAPIView):
+    queryset = BgBudzet.objects.all()
+    serializer_class = BgBudzetSerializer
+
+class CreateWydatekView(generics.CreateAPIView):
+    queryset = BgWydatek.objects.all()
+    serializer_class = BgWydatekSerializer
+
+class CreateKategoriaView(generics.CreateAPIView):
+    queryset = BgKategoria.objects.all()
+    serializer_class = BgKategoriaSerializer
+
+
 class BudgetDetail(APIView):
     permission_classes = (permissions.IsAuthenticated,)
     def get_object(self, id):

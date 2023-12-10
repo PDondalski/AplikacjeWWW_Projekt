@@ -2,7 +2,8 @@ from django.urls import path
 from budgetApp import views
 from . import views
 from .views import (BudgetDetail, BudgetList, CategoryDetail, CategoryList,
-                    ExpenseList, ExpenseDetail, SavingsList, SavingsDetail, UserDetailAPI,RegisterUserAPIView)
+                    ExpenseList, ExpenseDetail, SavingsList, SavingsDetail, UserDetailAPI,RegisterUserAPIView,
+                    CreateBudgetView, CreateWydatekView, CreateKategoriaView)
 
 
 urlpatterns = [
@@ -10,6 +11,9 @@ urlpatterns = [
     path("<int:id>", views.budget_detail, name='detail'),
     path('budgets/<int:id>/', BudgetDetail.as_view(), name='budget-detail'),
     path('budgets/', BudgetList.as_view(), name='budget-list'),
+    path('budgets/add', CreateBudgetView.as_view(), name='budgets-add'),
+    path('categories/add', CreateWydatekView.as_view(), name='categories-add'),
+    path('expenses/add', CreateKategoriaView.as_view(), name='expenses-add'),
     path('categories/<int:id>', CategoryDetail.as_view(), name='category-detail'),
     path('categories/', CategoryList.as_view(), name='category-list'),
     path("get-details",UserDetailAPI.as_view()),
