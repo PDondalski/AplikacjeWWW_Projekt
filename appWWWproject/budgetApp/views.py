@@ -7,7 +7,7 @@ from .models import *
 from rest_framework.decorators import APIView
 from rest_framework.response import Response
 from .serializers import BgBudzetSerializer, BgWydatekSerializer, BgKategoriaSerializer,  UserSerializer,RegisterSerializer, LoginSerializer
-from django.http import Http404, request
+from django.http import Http404
 from rest_framework.permissions import AllowAny
 from django.contrib.auth.models import User
 from rest_framework.authentication import TokenAuthentication
